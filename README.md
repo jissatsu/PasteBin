@@ -175,3 +175,26 @@ $paste = new \killua\PasteBin();
 $embed_js    = $paste->embed( \killua\PasteBin::$api_paste_key )->js;
 $embed_frame = $paste->embed( \killua\PasteBin::$api_paste_key )->frame;
 ```
+
+## Creating An 'api_user_key' Using The API Member Login System
+
+```
+\killua\PasteBin::$api_dev_key       -> This is your Api Developer Key
+\killua\PasteBin::$api_user_name     -> This is your username
+\killua\PasteBin::$api_user_password -> This is your password
+
+$paste = new \killua\PasteBin();
+
+\killua\PasteBin::$api_dev_key       = "THIS IS YOUR API_DEVELOPER KEY";
+\killua\PasteBin::$api_user_name     = "YOUR USERNAME";
+\killua\PasteBin::$api_user_password = "YOUR PASSWORD";
+
+if( $paste->create_user_key() ){
+	echo \killua\PasteBin::$httpCode . "\n";
+	echo \killua\PasteBin::$httpResponseText . "\n";
+}
+else{
+	\killua\PasteBin::display_errors( true );
+}
+
+```
