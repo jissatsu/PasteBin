@@ -66,7 +66,7 @@ $paste->show_options();
 * Required parameters: 
 ```
 \killua\PasteBin::$api_dev_key   -> This is your Api Developer Key
-\killua\PasteBin::$api_user_key  -> This key allows you to create your paste as a logged in user instead of as a guest
+\killua\PasteBin::$api_user_key  -> This key allows you to create, list, delete, get raw output of your paste as a logged in user instead of as a guest
 \killua\PasteBin::$api_paste_key -> This is the key of your paste
 ```
 
@@ -95,7 +95,7 @@ else{
 * Required parameters:
 ```
 \killua\PasteBin::$api_dev_key   -> This is your Api Developer Key
-\killua\PasteBin::$api_user_key  -> This key allows you to create your paste as a logged in user instead of as a guest
+\killua\PasteBin::$api_user_key  -> This key allows you to create, list, delete, get raw output of your paste as a logged in user instead of as a guest
 \killua\PasteBin::$api_paste_key -> This is the key of your paste
 ```
 
@@ -123,7 +123,7 @@ else{
 * Required parameters:
 ```
 \killua\PasteBin::$api_dev_key       -> This is your Api Developer Key
-\killua\PasteBin::$api_user_key      -> This key allows you to create your paste as a logged in user instead of as a guest
+\killua\PasteBin::$api_user_key      -> This key allows you to create, list, delete, get raw output of your paste as a logged in user instead of as a guest
 \killua\PasteBin::$api_results_limit -> This is the limit of users pastes count
 
 ```
