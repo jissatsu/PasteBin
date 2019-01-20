@@ -72,9 +72,9 @@ class PasteBin{
 	                         "path"        => "/^(((\/)|())((.*\/.*)+)\/)+$/" ];
 	
 	// these are the api urls
-	public static $URLS  = [ "post"     => "https://pastebin.com/api/api_post.php", "login"    => "https://pastebin.com/api/api_login.php", 
-			                 "get_raw"  => "https://pastebin.com/api/api_raw.php",  "any_raw"  => "https://pastebin.com/raw",
-					         "download" => "https://pastebin.com/dl/"
+	public static $URLS  = [ "post"     => "https://pastebin.com/api/api_post.php", "login"   => "https://pastebin.com/api/api_login.php", 
+			         "get_raw"  => "https://pastebin.com/api/api_raw.php",  "any_raw" => "https://pastebin.com/raw",
+				 "download" => "https://pastebin.com/dl/"
 	];
 
 	/*
@@ -84,8 +84,7 @@ class PasteBin{
 	 * @return void Returns no value.
 	 *
 	 */
-	public function set_option( string $option ) : void
-	{	
+	public function set_option( string $option ) : void {	
 		self::$api_option = $option;
 	}
 	
@@ -95,8 +94,7 @@ class PasteBin{
 	 *
 	 * @return bool Returns true on match, false otherwise.
 	 */
-	public function isValidPath( string $path ) : bool
-	{
+	public function isValidPath( string $path ) : bool {
 		return ( preg_match( ((object) self::$REGEX)->path, $path ) ) ? true : false ;
 	}
 
@@ -107,8 +105,7 @@ class PasteBin{
 	 * @param array $errors This is an array thats used to store errors.
 	 * @return void Return nothing, but store an error in the errors array if the path is not valid or doesn't exist, otherwise store the chosen path string.
 	 */
-	public function set_download_path( string $download_path, array &$errors ) : void
-	{
+	public function set_download_path( string $download_path, array &$errors ) : void {
 		if( !$this->isValidPath( $download_path ) || !is_dir( $download_path ) ){
 			array_push( self::$errors, "[PATH ERROR] - Path is either not valid (doesn't end or start with /) or doesn't exist!" );
 		}
@@ -123,8 +120,7 @@ class PasteBin{
 	 *
 	 * @return bool Returns true on success, false otherwise.
 	 */
-	public function download() : bool
-	{	
+	public function download() : bool {	
 		$req = self::init_req( ( (object) self::$URLS )->download );
 		if( is_null( $req ) ){
 			return false;
@@ -144,8 +140,7 @@ class PasteBin{
 	 *
 	 * @return bool Returns true on success, false otherwise.
 	 */
-	public function paste() : bool
-	{
+	public function paste() : bool {
 		$req = self::init_req( ( (object) self::$URLS )->post );
 		if( is_null( $req ) ){
 			return false;
@@ -165,8 +160,7 @@ class PasteBin{
 	 * @param string $paste_key This is the paste's key, which is mandatory.
 	 * @return bool Returns true on success, false otherwise.
 	 */
-	public function delete( string $paste_key = "") : bool
-	{
+	public function delete( string $paste_key = "") : bool {
 		$req = self::init_req( ( (object) self::$URLS )->post );
 		if( is_null( $req ) ){
 			return false;
@@ -184,8 +178,7 @@ class PasteBin{
 	 * The function returns no value.
 	 * @param string $paste_key This is the paste's key, which is mandatory.
 	 */
-	public function listt() : bool
-	{
+	public function listt() : bool {
 		$req = self::init_req( ( (object) self::$URLS )->post );
 		if( is_null( $req ) ){
 			return false;
@@ -205,8 +198,7 @@ class PasteBin{
 	 *
 	 * @return bool Returns true on success, false otherwise.
 	 */
-	public function create_user_key() : bool
-	{
+	public function create_user_key() : bool {
 		$req = self::init_req( ( (object) self::$URLS )->login );
 		if( is_null( $req ) ){
 			return false;
@@ -225,8 +217,7 @@ class PasteBin{
 	 *
 	 * @param string $paste_key This is the paste's key, which is mandatory.
 	 */
-	public function get_raw( string $paste_key = "" ) : bool
-	{
+	public function get_raw( string $paste_key = "" ) : bool {
 		$req = self::init_req( ( (object) self::$URLS )->get_raw );
 		if( is_null( $req ) ){
 			return false;
@@ -245,8 +236,7 @@ class PasteBin{
 	 * @param string $agents_file This is the user-agents file path.
 	 * @return array Returns an array containing the parsed user-agents.
 	 */
-	public function parse_agents( string $agents_file ) : array
-	{	
+	public function parse_agents( string $agents_file ) : array {	
 		$file = __DIR__."/".$agents_file;
 		if( @file_exists( $file ) ){
 			return @explode( "\x0a", @file_get_contents( $file ) );
@@ -259,8 +249,7 @@ class PasteBin{
 	 *
 	 * @param string $url This is the specified rul to use when initializing the request.
 	 */
-	public function init_req( string $url )
-	{	
+	public function init_req( string $url ) {	
 		$curl         = null;
 		self::$agents = self::parse_agents( 'u-agents.dat' );
 		switch ( $url ) 
@@ -271,11 +260,11 @@ class PasteBin{
 					self::$download_url = $url . self::$api_paste_key;
 					$curl               = curl_init();
 					$curl_opts          = array(
-										  CURLOPT_FILE       => @fopen( self::$download_path . self::$api_paste_key, "w" ),
-										  CURLOPT_USERAGENT  => self::$agents[ mt_rand( 0, sizeof( self::$agents ) - 1 ) ],
-										  CURLOPT_TIMEOUT    => 28800,
-										  CURLOPT_HTTPHEADER => array("Referer: https://pastebin.com/".self::$api_paste_key),
-										  CURLOPT_URL        => self::$download_url
+								CURLOPT_FILE       => @fopen( self::$download_path . self::$api_paste_key, "w" ),
+								CURLOPT_USERAGENT  => self::$agents[ mt_rand( 0, sizeof( self::$agents ) - 1 ) ],
+								CURLOPT_TIMEOUT    => 28800,
+								CURLOPT_HTTPHEADER => array("Referer: https://pastebin.com/".self::$api_paste_key),
+								CURLOPT_URL        => self::$download_url
 					);
 					curl_setopt_array( $curl, $curl_opts );
 				}
@@ -288,63 +277,63 @@ class PasteBin{
 				if( (strcmp( self::$api_option, "delete" ) === 0) && (strcmp( self::$api_paste_key, "" ) !== 0) )
 				{	
 					$query = http_build_query( [
-										  'api_option'    => self::$api_option, 
-										  'api_user_key'  => self::$api_user_key, 
-										  'api_dev_key'   => self::$api_dev_key,
-								  		  'api_paste_key' => self::$api_paste_key ] );
+								'api_option'    => self::$api_option, 
+								'api_user_key'  => self::$api_user_key, 
+								'api_dev_key'   => self::$api_dev_key,
+								'api_paste_key' => self::$api_paste_key ] );
 					$curl      = curl_init();
 					$curl_opts = array(
-									 CURLOPT_POST           => true,
-									 CURLOPT_POSTFIELDS     => $query,
-									 CURLOPT_RETURNTRANSFER => 1,
-									 CURLOPT_NOBODY         => 0,
-									 CURLOPT_USERAGENT      => self::$agents[ mt_rand( 0, sizeof( self::$agents ) - 1 ) ],
-									 CURLOPT_TIMEOUT        => 28800,
-									 CURLOPT_URL            => ((object) self::$URLS)->post
+							CURLOPT_POST           => true,
+							CURLOPT_POSTFIELDS     => $query,
+							CURLOPT_RETURNTRANSFER => 1,
+							CURLOPT_NOBODY         => 0,
+							CURLOPT_USERAGENT      => self::$agents[ mt_rand( 0, sizeof( self::$agents ) - 1 ) ],
+							CURLOPT_TIMEOUT        => 28800,
+							CURLOPT_URL            => ((object) self::$URLS)->post
 					);
 					curl_setopt_array( $curl, $curl_opts );
 				}
 				else if( strcmp( self::$api_option, "paste" ) === 0 )
 				{
 					$query = http_build_query( [
-										  'api_option'            => self::$api_option, 
-										  'api_dev_key'           => self::$api_dev_key,
-										  'api_user_key'          => self::$api_user_key,
-										  'api_paste_code'        => urlencode( self::$api_paste_code ),
-										  'api_paste_name'        => urlencode( self::$api_paste_name ),
-										  'api_paste_private'     => self::$api_paste_private,
-										  'api_paste_expire_date' => self::$api_paste_expire_date,
-										  'api_paste_format'      => self::$api_paste_format ] );
+								'api_option'            => self::$api_option, 
+								'api_dev_key'           => self::$api_dev_key,
+								'api_user_key'          => self::$api_user_key,
+								'api_paste_code'        => urlencode( self::$api_paste_code ),
+								'api_paste_name'        => urlencode( self::$api_paste_name ),
+								'api_paste_private'     => self::$api_paste_private,
+								'api_paste_expire_date' => self::$api_paste_expire_date,
+								'api_paste_format'      => self::$api_paste_format ] );
 
 					$curl      = curl_init();
 					$curl_opts = array(
-									 CURLOPT_POST           => true,
-									 CURLOPT_POSTFIELDS     => $query,
-									 CURLOPT_RETURNTRANSFER => 1,
-									 CURLOPT_NOBODY         => 0,
-									 CURLOPT_USERAGENT      => self::$agents[ mt_rand( 0, sizeof( self::$agents ) - 1 ) ],
-								     CURLOPT_TIMEOUT        => 28800,
-									 CURLOPT_URL            => ((object) self::$URLS)->post
+							 CURLOPT_POST           => true,
+							 CURLOPT_POSTFIELDS     => $query,
+							 CURLOPT_RETURNTRANSFER => 1,
+							 CURLOPT_NOBODY         => 0,
+							 CURLOPT_USERAGENT      => self::$agents[ mt_rand( 0, sizeof( self::$agents ) - 1 ) ],
+							 CURLOPT_TIMEOUT        => 28800,
+							 CURLOPT_URL            => ((object) self::$URLS)->post
 					);
 					curl_setopt_array( $curl, $curl_opts );
 				}
 				else if( strcmp( self::$api_option, "list" ) === 0 )
 				{
 					$query = http_build_query( [
-										  'api_option'        => self::$api_option, 
-										  'api_dev_key'       => self::$api_dev_key,
-										  'api_user_key'      => self::$api_user_key,
-										  'api_results_limit' => self::$api_results_limit ] );
+								'api_option'        => self::$api_option, 
+								'api_dev_key'       => self::$api_dev_key,
+								'api_user_key'      => self::$api_user_key,
+								'api_results_limit' => self::$api_results_limit ] );
 
 					$curl      = curl_init();
 					$curl_opts = array(
-									 CURLOPT_POST           => true,
-									 CURLOPT_POSTFIELDS     => $query,
-									 CURLOPT_RETURNTRANSFER => 1,
-									 CURLOPT_NOBODY         => 0,
-									 CURLOPT_USERAGENT      => self::$agents[ mt_rand( 0, sizeof( self::$agents ) - 1 ) ],
-								     CURLOPT_TIMEOUT        => 28800,
-									 CURLOPT_URL            => ((object) self::$URLS)->post
+							 CURLOPT_POST           => true,
+							 CURLOPT_POSTFIELDS     => $query,
+							 CURLOPT_RETURNTRANSFER => 1,
+							 CURLOPT_NOBODY         => 0,
+							 CURLOPT_USERAGENT      => self::$agents[ mt_rand( 0, sizeof( self::$agents ) - 1 ) ],
+							 CURLOPT_TIMEOUT        => 28800,
+							 CURLOPT_URL            => ((object) self::$URLS)->post
 					);
 					curl_setopt_array( $curl, $curl_opts );
 				}
@@ -357,20 +346,20 @@ class PasteBin{
 				if( (strcmp( self::$api_option, "show_paste" ) === 0) && ( strcmp( self::$api_paste_key, "" ) !== 0 ) )
 				{
 					$query = http_build_query([
-										  'api_option'    => self::$api_option,
-										  'api_dev_key'   => self::$api_dev_key,
-										  'api_user_key'  => self::$api_user_key,
-										  'api_paste_key' => self::$api_paste_key
+								'api_option'    => self::$api_option,
+								'api_dev_key'   => self::$api_dev_key,
+								'api_user_key'  => self::$api_user_key,
+								'api_paste_key' => self::$api_paste_key
 					]);
 					$curl      = curl_init();
 					$curl_opts = array(
-									 CURLOPT_POST           => true,
-									 CURLOPT_POSTFIELDS     => $query,
-									 CURLOPT_RETURNTRANSFER => 1,
-									 CURLOPT_NOBODY         => 0,
-									 CURLOPT_USERAGENT      => self::$agents[ mt_rand( 0, sizeof( self::$agents ) - 1 ) ],
-									 CURLOPT_TIMEOUT        => 28800,
-									 CURLOPT_URL            => ((object) self::$URLS)->get_raw
+							 CURLOPT_POST           => true,
+							 CURLOPT_POSTFIELDS     => $query,
+							 CURLOPT_RETURNTRANSFER => 1,
+							 CURLOPT_NOBODY         => 0,
+							 CURLOPT_USERAGENT      => self::$agents[ mt_rand( 0, sizeof( self::$agents ) - 1 ) ],
+							 CURLOPT_TIMEOUT        => 28800,
+							 CURLOPT_URL            => ((object) self::$URLS)->get_raw
 					);
 					curl_setopt_array( $curl, $curl_opts );
 				}
@@ -381,20 +370,20 @@ class PasteBin{
 
 			case ((object) self::$URLS )->login:
 					$query = http_build_query([
-										  'api_dev_key'       => self::$api_dev_key,
-										  'api_user_name'     => self::$api_user_name,
-										  'api_user_password' => self::$api_user_password
+								'api_dev_key'       => self::$api_dev_key,
+								'api_user_name'     => self::$api_user_name,
+								'api_user_password' => self::$api_user_password
 	
 					]);
 					$curl      = curl_init();
 					$curl_opts = array(
-									 CURLOPT_POST           => true,
-									 CURLOPT_POSTFIELDS     => $query,
-									 CURLOPT_RETURNTRANSFER => 1,
-									 CURLOPT_NOBODY         => 0,
-									 CURLOPT_USERAGENT      => self::$agents[ mt_rand( 0, sizeof( self::$agents ) - 1 ) ],
-									 CURLOPT_TIMEOUT        => 28800,
-									 CURLOPT_URL            => ((object) self::$URLS)->login
+							 CURLOPT_POST           => true,
+							 CURLOPT_POSTFIELDS     => $query,
+							 CURLOPT_RETURNTRANSFER => 1,
+							 CURLOPT_NOBODY         => 0,
+							 CURLOPT_USERAGENT      => self::$agents[ mt_rand( 0, sizeof( self::$agents ) - 1 ) ],
+							 CURLOPT_TIMEOUT        => 28800,
+							 CURLOPT_URL            => ((object) self::$URLS)->login
 					);
 					curl_setopt_array( $curl, $curl_opts );
 				break;
@@ -409,8 +398,7 @@ class PasteBin{
 	 * @return object Returns an object, the first element of which is a string representation of the js embeddable paste key.
 	 * The second element is also a string representation of the frame embeddable paste_key.
 	 */
-	public function embed( string $paste_key ) : object
-	{	
+	public function embed( string $paste_key ) : object {	
 		if( $paste_key !== "" ){
 			$embedJS    = '<script src="https://pastebin.com/embed_js/'.trim( $paste_key ).'"></script>';
 			$embedFrame = '<iframe src="https://pastebin.com/embed_iframe/'.trim( $paste_key ).'" style="border:none;width:100%"></iframe>';
@@ -428,8 +416,7 @@ class PasteBin{
 	 * @param bool $html This parameter is used to indicate whether you want the formats to be displayed as html (<span>).
 	 * @return void Returns no value. Only displays the formats.
 	 */
-	public function show_available_formats( bool $html ) : void
-	{	
+	public function show_available_formats( bool $html ) : void {	
 		$i = -1;
 		$file = __DIR__."/syntax.dat";
 		if( @file_exists( $file ) ){
@@ -449,8 +436,7 @@ class PasteBin{
 	 * @return array Returns an array, the first element of which is an object containing the paste options such as `delete, paste, list`, etc. 
 	 * The second element is also an object containing the expire paste options, such as `1M, 1Y, 2W`, etc.
 	 */
-	public function parse_opts() : array
-	{
+	public function parse_opts() : array {
 		self::$opts = (object) json_decode( @file_get_contents( __DIR__."/opts.json" ) );
 		self::$opts = [ self::$opts->paste, self::$opts->expire ];
 		return self::$opts;
@@ -463,8 +449,7 @@ class PasteBin{
 	 * @param array $opts An array that holds all the available options.
 	 * @return void 
 	 */
-	public function show_options( array $opts ) : void
-	{	
+	public function show_options( array $opts ) : void {	
 		$i = -1;
 		while( ($i++) < sizeof( $opts ) - 1 ){
 			if( $i == 1 )
@@ -481,8 +466,7 @@ class PasteBin{
 	 * @param bool $html This parameter is used to indicate whether you want the errors to be displayed as html (<span>).
      * @return void Returns no value, just prints the error messages.
      */
-	public static function display_errors( bool $html ) : void
-	{	
+	public static function display_errors( bool $html ) : void {	
 		$i = -1;
 		if( !empty( self::$errors ) ){
 			while( ($i++) < sizeof( self::$errors ) - 1 ){
