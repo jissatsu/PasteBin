@@ -1,0 +1,22 @@
+{
+    "paste": {
+         "delete"      : "delete",
+         "list"        : "list",
+         "paste"       : "paste",
+         "show_paste"  : "show_paste",
+         "userdetails" : "userdetails",
+         "download"    : "download",
+         "embed"       : "embed" 
+    },
+    "expire": {
+        "never"       : "N",
+        "ten_minutes" : "10M", 
+        "one_hour"    : "1H",
+        "one_day"     : "1D",
+        "one_week"    : "1W",
+        "two_weeks"   : "2W",
+        "one_month"   : "1M",
+        "six_months"  : "6M",
+        "one_year"    : "1Y"
+    }
+}
