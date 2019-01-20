@@ -71,7 +71,7 @@ class PasteBin{
 	                         "api_dev_key" => "/^([0-9a-z]+)$/", 
 	                         "path"        => "/^(((\/)|())((.*\/.*)+)\/)+$/" ];
 	
-	// these are the api urls
+	// these are the urls that will be used
 	public static $URLS  = [ "post"     => "https://pastebin.com/api/api_post.php", "login"   => "https://pastebin.com/api/api_login.php", 
 			         "get_raw"  => "https://pastebin.com/api/api_raw.php",  "any_raw" => "https://pastebin.com/raw",
 				 "download" => "https://pastebin.com/dl/"
