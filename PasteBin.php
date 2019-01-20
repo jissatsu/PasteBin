@@ -160,7 +160,7 @@ class PasteBin{
 	 * @param string $paste_key This is the paste's key, which is mandatory.
 	 * @return bool Returns true on success, false otherwise.
 	 */
-	public function delete( string $paste_key = "") : bool {
+	public function delete() : bool {
 		$req = self::init_req( ( (object) self::$URLS )->post );
 		if( is_null( $req ) ){
 			return false;
