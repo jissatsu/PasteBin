@@ -63,13 +63,6 @@ $paste->show_options();
 
 ## Deleting a paste
 
-* Required parameters: 
-```
-\killua\PasteBin::$api_dev_key   -> This is your Api Developer Key
-\killua\PasteBin::$api_user_key  -> This key allows you to create, list, delete, get raw output of your paste as a logged in user instead of as a guest
-\killua\PasteBin::$api_paste_key -> This is the key of your paste
-```
-
 * Deleting it:
 ```
 $paste = new \killua\PasteBin();
@@ -92,13 +85,6 @@ else{
 
 ## Getting raw paste output of users pastes including 'private' pastes
 
-* Required parameters:
-```
-\killua\PasteBin::$api_dev_key   -> This is your Api Developer Key
-\killua\PasteBin::$api_user_key  -> This key allows you to create, list, delete, get raw output of your paste as a logged in user instead of as a guest
-\killua\PasteBin::$api_paste_key -> This is the key of your paste
-```
-
 * Getting the output:
 ```
 $paste = new \killua\PasteBin();
@@ -120,14 +106,6 @@ else{
 ```
 ## Listing pastes created by a user
 
-* Required parameters:
-```
-\killua\PasteBin::$api_dev_key       -> This is your Api Developer Key
-\killua\PasteBin::$api_user_key      -> This key allows you to create, list, delete, get raw output of your paste as a logged in user instead of as a guest
-\killua\PasteBin::$api_results_limit -> This is the limit of users pastes count
-
-```
-
 * Listing the pastes:
 ```
 $paste = new \killua\PasteBin();
@@ -135,7 +113,7 @@ $paste->set_option( 'list' );
 
 \killua\PasteBin::$api_dev_key       = "THIS IS YOUR API_DEVELOPER KEY";
 \killua\PasteBin::$api_user_key      = "THIS IS YOU API USER_KEY";
-\killua\PasteBin::$api_results_limit = "A NUMBER BETWEEN 1 AND 1000";
+\killua\PasteBin::$api_results_limit = "A NUMBER BETWEEN 1 AND 1000"; // this indicates the number of pastes you want to list
 
 if( $paste->listt() ){
 	echo \killua\PasteBin::$httpCode . "<br>";
@@ -153,7 +131,7 @@ else{
 ```
 $paste = new \killua\PasteBin();
 $paste->set_option( 'download' );
-$paste->set_download_path( __DIR__ . "/posts/", \killua\PasteBin::$errors );
+$paste->set_download_path( "/home/user/folder/", \killua\PasteBin::$errors );
 
 \killua\PasteBin::$api_paste_key = "THIS IS THE PASTE'S KEY";
 
