@@ -192,7 +192,7 @@ class PasteBin{
 	}
 
 	/* 
-	 * This function is used to create a user api key.
+	 * This function is used to get info and settings about a user
 	 * The function returns a boolean.
 	 * Accepts no arguments.
 	 *
@@ -212,7 +212,7 @@ class PasteBin{
 	}
 
 	/* 
-	 * This function is used to get info and settings about a user.
+	 * This function is used to create an api_user_key
 	 * The function returns a boolean.
 	 * Accepts no arguments.
 	 *
