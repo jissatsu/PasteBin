@@ -144,7 +144,7 @@ if( $paste->listt() ){
 else{
 	// use this to see what errors have occurred if the paste doesnt work 
 	// the boolean argument indicates whether you want to display the errors as html (<span>)
-	\killua\PasteBin::display_errors( false );
+	\killua\PasteBin::display_errors( bool );
 }
 ```
 
@@ -162,7 +162,7 @@ if( $paste->download() ){
 	echo \killua\PasteBin::$httpResponseText . "\n";
 }
 else{
-	\killua\PasteBin::display_errors( true );
+	\killua\PasteBin::display_errors( bool );
 }
 ```
 
@@ -179,10 +179,6 @@ $embed_frame = $paste->embed( \killua\PasteBin::$api_paste_key )->frame;
 ## Creating An 'api_user_key' Using The API Member Login System
 
 ```
-\killua\PasteBin::$api_dev_key       -> This is your Api Developer Key
-\killua\PasteBin::$api_user_name     -> This is your username
-\killua\PasteBin::$api_user_password -> This is your password
-
 $paste = new \killua\PasteBin();
 
 \killua\PasteBin::$api_dev_key       = "THIS IS YOUR API_DEVELOPER KEY";
@@ -194,7 +190,25 @@ if( $paste->create_user_key() ){
 	echo \killua\PasteBin::$httpResponseText . "\n";
 }
 else{
-	\killua\PasteBin::display_errors( true );
+	\killua\PasteBin::display_errors( bool );
 }
 
+```
+
+## Getting users info and settings
+
+```
+$paste = new \killua\PasteBin();
+$paste->set_option( 'userdetails' );
+
+\killua\PasteBin::$api_dev_key  = "THIS IS YOUR API_DEVELOPER KEY";
+\killua\PasteBin::$api_user_key = "THIS IS YOUR API USER KEY";
+
+if( $paste->get_user_info() ){
+	echo PasteBin::$httpCode  . "\n";
+	echo PasteBin::$httpResponseText . "\n";
+}
+else{
+	PasteBin::display_errors( bool );
+}
 ```

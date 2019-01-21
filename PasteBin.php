@@ -198,8 +198,28 @@ class PasteBin{
 	 *
 	 * @return bool Returns true on success, false otherwise.
 	 */
+	public function get_user_info() : bool {
+		$req = self::init_req( ( (object) self::$URLS )->post );
+		if( is_null( $req ) ){
+			return false;
+		}
+		else{
+			self::$httpResponseText = curl_exec( $req );
+			self::$httpCode         = curl_getinfo( $req, CURLINFO_HTTP_CODE );
+			curl_close( $req );
+			return true;
+		}
+	}
+
+	/* 
+	 * This function is used to get info and settings about a user.
+	 * The function returns a boolean.
+	 * Accepts no arguments.
+	 *
+	 * @return bool Returns true on success, false otherwise.
+	 */
 	public function create_user_key() : bool {
-		$req = self::init_req( ( (object) self::$URLS )->login );
+		$req = self::init_req( ( (object) self::$URLS )->post );
 		if( is_null( $req ) ){
 			return false;
 		}
@@ -324,6 +344,25 @@ class PasteBin{
 								'api_dev_key'       => self::$api_dev_key,
 								'api_user_key'      => self::$api_user_key,
 								'api_results_limit' => self::$api_results_limit ] );
+
+					$curl      = curl_init();
+					$curl_opts = array(
+							 CURLOPT_POST           => true,
+							 CURLOPT_POSTFIELDS     => $query,
+							 CURLOPT_RETURNTRANSFER => 1,
+							 CURLOPT_NOBODY         => 0,
+							 CURLOPT_USERAGENT      => self::$agents[ mt_rand( 0, sizeof( self::$agents ) - 1 ) ],
+							 CURLOPT_TIMEOUT        => 28800,
+							 CURLOPT_URL            => ((object) self::$URLS)->post
+					);
+					curl_setopt_array( $curl, $curl_opts );
+				}
+				else if( strcmp( self::$api_option, "userdetails" ) === 0 )
+				{
+					$query = http_build_query( [
+								'api_option'        => self::$api_option, 
+								'api_dev_key'       => self::$api_dev_key,
+								'api_user_key'      => self::$api_user_key ] );
 
 					$curl      = curl_init();
 					$curl_opts = array(
